@@ -9,6 +9,7 @@ const Home = () => {
         { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
     ]);
 
+    const [name, setName] = useState("Mani");
     const handleDelete = (id)=>{
         setBlogs(blogs.filter(blog=>blog.id!==id));
     }
@@ -19,11 +20,13 @@ const Home = () => {
         console.log(blogs);
         //! To be carefull when changing the state in useEffect, as it may end up in continuous loop... 
         //? Explanation: (change useState in useEffect => component re-render => useEffect Triggered => change useState in useEffect and so on....)
-    })
+    }, [name, blogs]); //? you can pass empty dependency array to invoke the useEffect function only on initialization
 
     return (
         <div className="home">
             <BlogsList blogs={blogs} title="All Blogs" handleDelete={handleDelete}/>
+            <p>{name}</p>
+            <button onClick={()=>{setName("Bala")}}>Change Name</button>
         </div>
     );
 }
