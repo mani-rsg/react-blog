@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import BlogsList from './BlogList'; 
+//* imported as plural just to understand that the import name can be different from export name
 const Home = () => {
 
     const [blogs, setBlogs] = useState([
@@ -6,14 +8,12 @@ const Home = () => {
         { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
         { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
     ]);
+    const handleDelete = (id)=>{
+        setBlogs(blogs.filter(blog=>blog.id!==id));
+    }
     return (
         <div className="home">
-            {blogs.map(blog => (
-                <div className="blog-preview" key={blog.id}>
-                    <h2>{blog.title}</h2>
-                    <p>Written by{blog.author}</p>
-                </div>
-            ))}
+            <BlogsList blogs={blogs} title="All Blogs" handleDelete={handleDelete}/>
         </div>
     );
 }
