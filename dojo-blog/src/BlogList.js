@@ -1,4 +1,5 @@
 const BlogList = ({ blogs, title}) => {
+    console.log("list called")
     return (
         <div className="blog-list">
             <h2>{title}</h2>

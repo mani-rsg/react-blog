@@ -4,26 +4,27 @@ import BlogsList from './BlogList';
 const Home = () => {
 
     const [blogs, setBlogs] = useState(null);
-
-    const handleDelete = (id) => {
-        setBlogs(blogs.filter(blog => blog.id !== id));
-    }
+    const [isPending, setIsPending] = useState(true);
 
     //? useEffect: It will invoke the function provided as parameter whenever the component is rendered, even on initial render.
     useEffect(() => {
         console.log("useEffect triggered");
-        fetch('http://localhost:8000/blogs').then(response => {
-            console.log(response);
-            return response.json();
-        }).then(data=>{
-            console.log(data);
-            setBlogs(data);
-        })
+        setTimeout(() => {
+            fetch('http://localhost:8000/blogs').then(response => {
+                console.log(response);
+                return response.json();
+            }).then(data => {
+                console.log(data);
+                setIsPending(false);
+                setBlogs(data);
+            })
+        }, 1000)
     }, []); //? you can pass empty dependency array to invoke the useEffect function only on initialization
 
     return (
         <div className="home">
-            {blogs && <BlogsList blogs={blogs} title="All Blogs"/>}
+            {isPending && <div>Loading...</div>}
+            {blogs && <BlogsList blogs={blogs} title="All Blogs" />}
         </div>
     );
 }
