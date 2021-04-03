@@ -6,8 +6,9 @@ const useFetch = (url) => {
     //? useEffect: It will invoke the function provided as parameter whenever the component is rendered, even on initial render.
     useEffect(() => {
         console.log("useEffect triggered");
+        const abortController = new AbortController();
         setTimeout(() => {
-            fetch(url).then(response => {
+            fetch(url, {signal: abortController.signal}).then(response => {
                 console.log(response);
                 if(!response.ok) throw Error(response.statusText);
                 return response.json();
@@ -17,12 +18,14 @@ const useFetch = (url) => {
                 setIsPending(false);
                 setData(data);
             }).catch(error=>{
+                if(error.name==="AbortError") return;
                 console.error(error.message);
                 setIsPending(false);
                 setData(null);
                 setError(error.message);
             })
-        }, 1000)
+        }, 1000);
+        return ()=> abortController.abort();
     }, [url]);
     
     return {data, isPending, error};
