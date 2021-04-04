@@ -13,7 +13,6 @@ const useFetch = (url) => {
                 if(!response.ok) throw Error(response.statusText);
                 return response.json();
             }).then(data => {
-                console.log(data);
                 setError(null);
                 setIsPending(false);
                 setData(data);
