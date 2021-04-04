@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import {useHistory} from "react-router-dom";
 const Create = () => {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
@@ -7,6 +7,7 @@ const Create = () => {
     
     const [isPending, setIsPending] = useState(false);
 
+    const history = useHistory();
     const handleSubmit = (e) => {
         e.preventDefault(); //* default behaviour on a form submit is to reload the page
         const blog = { title, body, author };
@@ -19,6 +20,8 @@ const Create = () => {
         }).then(()=>{
             console.log('Blog added');
             setIsPending(false);
+            //* history(-1) will go one page backward (just like back button on chrome), similarly history(1) for forward
+            history.push('/'); //? Note: dont mention the whole path just mention the path as we done in App component
         }).catch(error=>{
             console.error(error, "unable to add blog");
             setIsPending(false);
